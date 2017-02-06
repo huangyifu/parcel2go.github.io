@@ -2,19 +2,19 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Parcel2Go API Docs</title>
-    <link>http://parcel2go.github.io/index.xml</link>
+    <link>https://parcel2go.github.io/index.xml</link>
     <description>Recent content on Parcel2Go API Docs</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-gb</language>
     <copyright>Parcel2Go</copyright>
-    <atom:link href="http://parcel2go.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://parcel2go.github.io/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>Authentication</title>
-      <link>http://parcel2go.github.io/authentication/</link>
+      <link>https://parcel2go.github.io/authentication/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://parcel2go.github.io/authentication/</guid>
+      <guid>https://parcel2go.github.io/authentication/</guid>
       <description>
 
 &lt;p&gt;Parcel2Go APIs use the &lt;a href=&#34;https://tools.ietf.org/html/rfc6749&#34;&gt;OAuth2&lt;/a&gt; protocol for authentication which conforms to the &lt;a href=&#34;http://openid.net/connect/&#34;&gt;OpenID Connect&lt;/a&gt; specifcation.  There are several types of OAuth 2.0 authentication scenarios, the common ones are detailed below.  There are also several varying levels of access which is controlled using the &lt;a href=&#34;#Scopes&#34;&gt;scope parameter&lt;/a&gt; which is specified when requesting token.&lt;/p&gt;
@@ -51,10 +51,10 @@
     
     <item>
       <title>Home</title>
-      <link>http://parcel2go.github.io/</link>
+      <link>https://parcel2go.github.io/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://parcel2go.github.io/</guid>
+      <guid>https://parcel2go.github.io/</guid>
       <description>
 
 &lt;p&gt;This is the documentation for the Parcel2Go API.&lt;/p&gt;
@@ -75,10 +75,10 @@
     
     <item>
       <title>Orders</title>
-      <link>http://parcel2go.github.io/orders/</link>
+      <link>https://parcel2go.github.io/orders/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://parcel2go.github.io/orders/</guid>
+      <guid>https://parcel2go.github.io/orders/</guid>
       <description>
 
 &lt;h2 id=&#34;creating-an-orders&#34;&gt;Creating an Orders&lt;/h2&gt;

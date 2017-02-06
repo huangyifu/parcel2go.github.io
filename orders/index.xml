@@ -2,19 +2,19 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Orders on Parcel2Go API Docs</title>
-    <link>http://parcel2go.github.io/orders/index.xml</link>
+    <link>https://parcel2go.github.io/orders/index.xml</link>
     <description>Recent content in Orders on Parcel2Go API Docs</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-gb</language>
     <copyright>Parcel2Go</copyright>
-    <atom:link href="http://parcel2go.github.io/orders/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://parcel2go.github.io/orders/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>Orders</title>
-      <link>http://parcel2go.github.io/orders/</link>
+      <link>https://parcel2go.github.io/orders/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://parcel2go.github.io/orders/</guid>
+      <guid>https://parcel2go.github.io/orders/</guid>
       <description>
 
 &lt;h2 id=&#34;creating-an-orders&#34;&gt;Creating an Orders&lt;/h2&gt;
