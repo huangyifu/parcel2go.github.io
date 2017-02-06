@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Authentications on Parcel2Go API Docs</title>
+    <link>http://parcel2go.github.io/authentication/index.xml</link>
+    <description>Recent content in Authentications on Parcel2Go API Docs</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-gb</language>
+    <copyright>Parcel2Go</copyright>
+    <atom:link href="http://parcel2go.github.io/authentication/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Authentication</title>
+      <link>http://parcel2go.github.io/authentication/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://parcel2go.github.io/authentication/</guid>
+      <description>
+
+&lt;p&gt;Parcel2Go APIs use the &lt;a href=&#34;https://tools.ietf.org/html/rfc6749&#34;&gt;OAuth2&lt;/a&gt; protocol for authentication which conforms to the &lt;a href=&#34;http://openid.net/connect/&#34;&gt;OpenID Connect&lt;/a&gt; specifcation.  There are several types of OAuth 2.0 authentication scenarios, the common ones are detailed below.  There are also several varying levels of access which is controlled using the &lt;a href=&#34;#Scopes&#34;&gt;scope parameter&lt;/a&gt; which is specified when requesting token.&lt;/p&gt;
+
+&lt;h3 id=&#34;client-credentials-authorisation-code-flow&#34;&gt;Client Credentials / Authorisation Code Flow&lt;/h3&gt;
+
+&lt;p&gt;You will be assigned a client id and sercret which you can then exchange for an access token using the authorisation endpoint; The access token is then used in the Authorization header when making HTTP calls to the API.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Clients using this method must be able to maintain a secret.&lt;/li&gt;
+&lt;li&gt;Does not provide payment scope&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;This method is ideal when the client will be communication server to server and the payment scope is not required.&lt;/p&gt;
+
+&lt;h3 id=&#34;implicit&#34;&gt;Implicit&lt;/h3&gt;
+
+&lt;p&gt;You will redirect the user to our authorisation endpoint where the user will login and get redirected back to your site.  The access token will be included in the redirect url.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Provides greater level of access (payment scope)&lt;/li&gt;
+&lt;li&gt;Return URLs are part of the authentication so must be registered&lt;/li&gt;
+&lt;li&gt;No secret&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;scopes&#34;&gt;Scopes&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;public-api - This is basic scope required for any api call&lt;/li&gt;
+&lt;li&gt;payment - This scope is required in order to make payment on behalf of a customer using their prepay/stored cards.&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

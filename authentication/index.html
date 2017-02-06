@@ -9,18 +9,18 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,maximum-scale=1">
     <meta http-equiv="X-UA-Compatible" content="IE=10" />
-    <title>Parcel2Go API Docs</title>
+    <title>Authentication - Parcel2Go API Docs</title>
     <meta name="generator" content="Hugo 0.18.1" />
 
     
     <meta name="description" content="Parcel2Go documentation">
     
-    <link rel="canonical" href="http://parcel2go.github.io/">
+    <link rel="canonical" href="http://parcel2go.github.io/authentication/">
     
     <meta name="author" content="Parcel2Go">
     
 
-    <meta property="og:url" content="http://parcel2go.github.io/">
+    <meta property="og:url" content="http://parcel2go.github.io/authentication/">
     <meta property="og:title" content="Parcel2Go API Docs">
     
     <meta name="apple-mobile-web-app-title" content="Parcel2Go API Docs">
@@ -69,9 +69,6 @@
     <script src="http://parcel2go.github.io/javascripts/modernizr.js"></script>
 
     
-    <link href="http://parcel2go.github.io/index.xml" rel="alternate" type="application/rss+xml" title="Parcel2Go API Docs" />
-    <link href="http://parcel2go.github.io/index.xml" rel="feed" type="application/rss+xml" title="Parcel2Go API Docs" />
-    
 
   </head>
   <body class="palette-primary-blue palette-accent-light-blue">
@@ -97,7 +94,7 @@
     </div>
     <div class="stretch">
       <div class="title">
-        Parcel2Go API Docs
+        Authentication
       </div>
     </div>
 
@@ -154,14 +151,11 @@
 
 
 
-<a class="current" title="Home" href="/">
+<a  title="Home" href="/">
 	
 	Home
 </a>
 
-
-<ul id="scrollspy">
-</ul>
 
 
   
@@ -175,11 +169,14 @@
 
 
 
-<a  title="Authentication" href="/authentication/">
+<a class="current" title="Authentication" href="/authentication/">
 	
 	Authentication
 </a>
 
+
+<ul id="scrollspy">
+</ul>
 
 
   
@@ -228,26 +225,40 @@
 
 	<article class="article">
 		<div class="wrapper">
+			<h1>Authentication </h1>
+
 			
-				<h1>Home </h1>
 
-				
+<p>Parcel2Go APIs use the <a href="https://tools.ietf.org/html/rfc6749">OAuth2</a> protocol for authentication which conforms to the <a href="http://openid.net/connect/">OpenID Connect</a> specifcation.  There are several types of OAuth 2.0 authentication scenarios, the common ones are detailed below.  There are also several varying levels of access which is controlled using the <a href="#Scopes">scope parameter</a> which is specified when requesting token.</p>
 
-<p>This is the documentation for the Parcel2Go API.</p>
+<h3 id="client-credentials-authorisation-code-flow">Client Credentials / Authorisation Code Flow</h3>
 
-<p>Detailed documentation for each call can be found on the swagger documentation site <a href="https://www.parcel2go.com/api/swagger">https://www.parcel2go.com/api/swagger</a> .</p>
-
-<h3 id="urls">Urls</h3>
+<p>You will be assigned a client id and sercret which you can then exchange for an access token using the authorisation endpoint; The access token is then used in the Authorization header when making HTTP calls to the API.</p>
 
 <ul>
-<li>Live API : <a href="Https://www.parcel2go.com/api">Https://www.parcel2go.com/api</a></li>
-<li>Sandbox API : <a href="https://api.qa.parcelsolutions.net/api">https://api.qa.parcelsolutions.net/api</a></li>
-<li>OpenID configuration Document : <a href="https://www.parcel2go.com/auth/.well-known/openid-configuration">https://www.parcel2go.com/auth/.well-known/openid-configuration</a></li>
-<li>Authorisation Endpoint : <a href="https://www.parcel2go.com/auth/connect/authorize">https://www.parcel2go.com/auth/connect/authorize</a></li>
-<li>Token Endpoint : <a href="https://www.parcel2go.com/auth/connect/token">https://www.parcel2go.com/auth/connect/token</a></li>
+<li>Clients using this method must be able to maintain a secret.</li>
+<li>Does not provide payment scope</li>
 </ul>
 
-			
+<p>This method is ideal when the client will be communication server to server and the payment scope is not required.</p>
+
+<h3 id="implicit">Implicit</h3>
+
+<p>You will redirect the user to our authorisation endpoint where the user will login and get redirected back to your site.  The access token will be included in the redirect url.</p>
+
+<ul>
+<li>Provides greater level of access (payment scope)</li>
+<li>Return URLs are part of the authentication so must be registered</li>
+<li>No secret</li>
+</ul>
+
+<h2 id="scopes">Scopes</h2>
+
+<ul>
+<li>public-api - This is basic scope required for any api call</li>
+<li>payment - This scope is required in order to make payment on behalf of a customer using their prepay/stored cards.</li>
+</ul>
+
 
 			<aside class="copyright" role="note">
 				
@@ -262,15 +273,13 @@
 			<footer class="footer">
 				
 
-
-
 <nav class="pagination" aria-label="Footer">
   <div class="previous">
+  
   </div>
 
-  
-  
   <div class="next">
+  
       <a href="http://parcel2go.github.io/authentication/" title="Authentications">
         <span class="direction">
           Next
@@ -286,8 +295,11 @@
           </div>
         </div>
       </a>
+  
   </div>
 </nav>
+
+
 
 
 
