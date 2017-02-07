@@ -201,6 +201,24 @@
 </li>
 
 
+
+<li>
+  
+    
+
+
+
+<a  title="International Orders" href="/help/international-orders/">
+	
+	International Orders
+</a>
+
+
+
+  
+</li>
+
+
         </ul>
         
 
@@ -229,9 +247,83 @@
 
 			
 
+<p>The flow for processing an order is to first <a href="#Creating an Orders">create an order</a> which if successful will return an OrderId, then to <a href="#Pay for Order">pay for the order</a> referncing the order by Id.</p>
+
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>All API calls require authentication with bearer tokens via the Authorization header. See <a href="/authentication">Authentication</a></p>
+</div>
+
 <h2 id="creating-an-orders">Creating an Orders</h2>
 
+<p><a href="https://www.parcel2go.com/api/swagger/ui/index#!/Orders/Orders_Post">Swagger Document and Demo</a></p>
+
+<pre><code class="language-curl">
+curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' --header 'Authorization: Bearer {TOKEN_HERE}' -d '{ \ 
+   &quot;Items&quot;: [ \ 
+     { \ 
+       &quot;Id&quot;: &quot;e7f228dd-95cc-4b5f-83d7-b901e120df73&quot;, \ 
+       &quot;CollectionDate&quot;: &quot;2018-01-02T10:05:36.1002804+00:00&quot;, \ 
+       &quot;Upsells&quot;: [ \ 
+         { \ 
+           &quot;Type&quot;: &quot;&quot; \ 
+         } \ 
+       ], \ 
+       &quot;Parcels&quot;: [ \ 
+         { \ 
+           &quot;Id&quot;: &quot;aa18be6f-d93d-4a73-bd32-08291b882068&quot;, \ 
+           &quot;Height&quot;: 10.5, \ 
+           &quot;Length&quot;: 10.5, \ 
+           &quot;EstimatedValue&quot;: 100.99, \ 
+           &quot;Weight&quot;: 10, \ 
+           &quot;Width&quot;: 15, \ 
+           &quot;DeliveryAddress&quot;: { \ 
+             &quot;ContactName&quot;: &quot;John Jiggery&quot;, \ 
+             &quot;Email&quot;: &quot;delivery@example.com&quot;, \ 
+             &quot;Property&quot;: &quot;The Cube&quot;, \ 
+             &quot;Street&quot;: &quot;Coe Street&quot;, \ 
+             &quot;Town&quot;: &quot;Bolton&quot;, \ 
+             &quot;County&quot;: &quot;Bolton&quot;, \ 
+             &quot;Postcode&quot;: &quot;BL3 6BU&quot;, \ 
+             &quot;CountryIsoCode&quot;: &quot;GBR&quot; \ 
+           }, \ 
+           &quot;ContentsSummary&quot;: &quot;Slippers&quot; \ 
+         } \ 
+       ], \ 
+       &quot;Service&quot;: &quot;yodel-24&quot;, \ 
+       &quot;CollectionAddress&quot;: { \ 
+         &quot;ContactName&quot;: &quot;James Jammy&quot;, \ 
+         &quot;Email&quot;: &quot;james@example.com&quot;, \ 
+         &quot;Phone&quot;: &quot;077777777777&quot;, \ 
+         &quot;Organisation&quot;: &quot;Parcel2Go&quot;, \ 
+         &quot;Property&quot;: &quot;11&quot;, \ 
+         &quot;Street&quot;: &quot;Saville St&quot;, \ 
+         &quot;Locality&quot;: &quot;&quot;, \ 
+         &quot;Town&quot;: &quot;Malton&quot;, \ 
+         &quot;County&quot;: &quot;North Yorkshire&quot;, \ 
+         &quot;Postcode&quot;: &quot;YO17 7LL&quot;, \ 
+         &quot;CountryIsoCode&quot;: &quot;GBR&quot;, \ 
+         &quot;SpecialInstructions&quot;: &quot;&quot; \ 
+       } \ 
+     } \ 
+   ], \ 
+   &quot;CustomerDetails&quot;: { \ 
+     &quot;Email&quot;: &quot;test@example.com&quot;, \ 
+     &quot;Forename&quot;: &quot;Joe&quot;, \ 
+     &quot;Surname&quot;: &quot;Blogs&quot; \ 
+   } \ 
+ }' 'https://www.parcel2go.com/api/orders'
+
+</code></pre>
+
 <h2 id="paying-for-an-orders">Paying for an Orders</h2>
+
+<p>In order to pay for an order a token must be provided which has the payment scope.</p>
+
+<pre><code class="language-curl">
+curl -X POST --header 'Accept: application/json'  --header 'Authorization: Bearer {TOKEN_HERE}' 'https://www.parcel2go.com/api/orders/123/paywithprepay'
+
+</code></pre>
 
 
 			<aside class="copyright" role="note">

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Helps on Parcel2Go API Docs</title>
+    <link>https://parcel2go.github.io/help/index.xml</link>
+    <description>Recent content in Helps on Parcel2Go API Docs</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-gb</language>
+    <copyright>Parcel2Go</copyright>
+    <atom:link href="https://parcel2go.github.io/help/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>International Orders</title>
+      <link>https://parcel2go.github.io/help/international-orders/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://parcel2go.github.io/help/international-orders/</guid>
+      <description>&lt;p&gt;Shipments which are international require additional customs details and may require stricter address formatting.&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -17,18 +17,44 @@
       <guid>https://parcel2go.github.io/authentication/</guid>
       <description>
 
-&lt;p&gt;Parcel2Go APIs use the &lt;a href=&#34;https://tools.ietf.org/html/rfc6749&#34;&gt;OAuth2&lt;/a&gt; protocol for authentication which conforms to the &lt;a href=&#34;http://openid.net/connect/&#34;&gt;OpenID Connect&lt;/a&gt; specifcation.  There are several types of OAuth 2.0 authentication scenarios, the common ones are detailed below.  There are also several varying levels of access which is controlled using the &lt;a href=&#34;#Scopes&#34;&gt;scope parameter&lt;/a&gt; which is specified when requesting token.&lt;/p&gt;
+&lt;p&gt;Before you can start using the Parcel2Go APIs you need to configure an authentication method.  Parcel2Go APIs use the &lt;a href=&#34;https://tools.ietf.org/html/rfc6749&#34;&gt;OAuth2&lt;/a&gt; protocol for authentication which conforms to the &lt;a href=&#34;http://openid.net/connect/&#34;&gt;OpenID Connect&lt;/a&gt; specifcation.  There are several types of OAuth 2.0 authentication scenarios, the common ones are detailed below.  There are also several levels of access which are controlled using the &lt;a href=&#34;#Scopes&#34;&gt;scope parameter&lt;/a&gt; which is specified when requesting access tokens.&lt;/p&gt;
 
-&lt;h3 id=&#34;client-credentials-authorisation-code-flow&#34;&gt;Client Credentials / Authorisation Code Flow&lt;/h3&gt;
+&lt;h3 id=&#34;client-credentials&#34;&gt;Client Credentials&lt;/h3&gt;
 
 &lt;p&gt;You will be assigned a client id and sercret which you can then exchange for an access token using the authorisation endpoint; The access token is then used in the Authorization header when making HTTP calls to the API.&lt;/p&gt;
 
 &lt;ul&gt;
 &lt;li&gt;Clients using this method must be able to maintain a secret.&lt;/li&gt;
-&lt;li&gt;Does not provide payment scope&lt;/li&gt;
+&lt;li&gt;Does not provide payment scope for customers account&lt;/li&gt;
+&lt;li&gt;Payments can be configured against clients account&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;This method is ideal when the client will be communication server to server and the payment scope is not required.&lt;/p&gt;
+&lt;p&gt;This method is ideal when the client will be communication server to server and the payment scope is not required or all payments will be comining from the hosts account.&lt;/p&gt;
+
+&lt;h3 id=&#34;example-token-request&#34;&gt;Example Token Request&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-curl&#34;&gt;curl --request POST \
+  --url https://www.parcel2go.com/auth/connect/token \
+  --header &#39;content-type: application/x-www-form-urlencoded&#39; \
+  --data &#39;grant_type=client_credentials&amp;amp;scope=public-api&amp;amp;client_id={YOUR CLIENTID}&amp;amp;client_secret={YOUR CLIENT SECRET}&#39;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;example-response&#34;&gt;Example Response&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-json&#34;&gt;{
+	&amp;quot;access_token&amp;quot;: &amp;quot;abef.....&amp;quot;,
+	&amp;quot;expires_in&amp;quot;: 7200,
+	&amp;quot;token_type&amp;quot;: &amp;quot;Bearer&amp;quot;
+}
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The access_token here can now be used in HTTP requests to the api by specifying a bearer token header.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-curl&#34;&gt;curl -X GET --header &#39;Accept: application/json&#39; &#39;Authorization: Bearer abef..&#39; &#39;https://www.parcel2go.com/api/services&#39;
+
+
+&lt;/code&gt;&lt;/pre&gt;
 
 &lt;h3 id=&#34;implicit&#34;&gt;Implicit&lt;/h3&gt;
 
@@ -38,13 +64,22 @@
 &lt;li&gt;Provides greater level of access (payment scope)&lt;/li&gt;
 &lt;li&gt;Return URLs are part of the authentication so must be registered&lt;/li&gt;
 &lt;li&gt;No secret&lt;/li&gt;
+&lt;li&gt;Users have to log in&lt;/li&gt;
 &lt;/ul&gt;
+
+&lt;p&gt;This flow is ideal for clients which want to intergrate with a customers parcel2go account and allow the customer to pay for their own orders.&lt;/p&gt;
+
+&lt;h2 id=&#34;request-access-credentials&#34;&gt;Request Access Credentials&lt;/h2&gt;
+
+&lt;p&gt;To request access credentials please send an email to &lt;a href=&#34;mailto:apihelp@parcel2go.com&#34;&gt;apihelp@parcel2go.com&lt;/a&gt; with details on how you wish to use the API and which authentication method above you would like to use.  If you want to use the implicit flow, please give a list of URLS which you would like to use for the return url.&lt;/p&gt;
 
 &lt;h2 id=&#34;scopes&#34;&gt;Scopes&lt;/h2&gt;
 
+&lt;p&gt;The following custom scopes are provided in addition to the default OAuth 2.0 scopes.&lt;/p&gt;
+
 &lt;ul&gt;
 &lt;li&gt;public-api - This is basic scope required for any api call&lt;/li&gt;
-&lt;li&gt;payment - This scope is required in order to make payment on behalf of a customer using their prepay/stored cards.&lt;/li&gt;
+&lt;li&gt;payment - This scope is required in order to make payments on behalf of a customer using their stored payment methods.&lt;/li&gt;
 &lt;/ul&gt;
 </description>
     </item>
@@ -61,7 +96,7 @@
 
 &lt;p&gt;Detailed documentation for each call can be found on the swagger documentation site &lt;a href=&#34;https://www.parcel2go.com/api/swagger&#34;&gt;https://www.parcel2go.com/api/swagger&lt;/a&gt; .&lt;/p&gt;
 
-&lt;h3 id=&#34;urls&#34;&gt;Urls&lt;/h3&gt;
+&lt;h3 id=&#34;endpoints&#34;&gt;Endpoints&lt;/h3&gt;
 
 &lt;ul&gt;
 &lt;li&gt;Live API : &lt;a href=&#34;Https://www.parcel2go.com/api&#34;&gt;Https://www.parcel2go.com/api&lt;/a&gt;&lt;/li&gt;
@@ -74,6 +109,16 @@
     </item>
     
     <item>
+      <title>International Orders</title>
+      <link>https://parcel2go.github.io/help/international-orders/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://parcel2go.github.io/help/international-orders/</guid>
+      <description>&lt;p&gt;Shipments which are international require additional customs details and may require stricter address formatting.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
       <title>Orders</title>
       <link>https://parcel2go.github.io/orders/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
@@ -81,9 +126,83 @@
       <guid>https://parcel2go.github.io/orders/</guid>
       <description>
 
+&lt;p&gt;The flow for processing an order is to first &lt;a href=&#34;#Creating an Orders&#34;&gt;create an order&lt;/a&gt; which if successful will return an OrderId, then to &lt;a href=&#34;#Pay for Order&#34;&gt;pay for the order&lt;/a&gt; referncing the order by Id.&lt;/p&gt;
+
+&lt;div class=&#34;admonition note&#34;&gt;
+&lt;p class=&#34;admonition-title&#34;&gt;Note&lt;/p&gt;
+&lt;p&gt;All API calls require authentication with bearer tokens via the Authorization header. See &lt;a href=&#34;https://parcel2go.github.io/authentication&#34;&gt;Authentication&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+
 &lt;h2 id=&#34;creating-an-orders&#34;&gt;Creating an Orders&lt;/h2&gt;
 
+&lt;p&gt;&lt;a href=&#34;https://www.parcel2go.com/api/swagger/ui/index#!/Orders/Orders_Post&#34;&gt;Swagger Document and Demo&lt;/a&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-curl&#34;&gt;
+curl -X POST --header &#39;Content-Type: application/json&#39; --header &#39;Accept: application/json&#39; --header &#39;Authorization: Bearer {TOKEN_HERE}&#39; -d &#39;{ \ 
+   &amp;quot;Items&amp;quot;: [ \ 
+     { \ 
+       &amp;quot;Id&amp;quot;: &amp;quot;e7f228dd-95cc-4b5f-83d7-b901e120df73&amp;quot;, \ 
+       &amp;quot;CollectionDate&amp;quot;: &amp;quot;2018-01-02T10:05:36.1002804+00:00&amp;quot;, \ 
+       &amp;quot;Upsells&amp;quot;: [ \ 
+         { \ 
+           &amp;quot;Type&amp;quot;: &amp;quot;&amp;quot; \ 
+         } \ 
+       ], \ 
+       &amp;quot;Parcels&amp;quot;: [ \ 
+         { \ 
+           &amp;quot;Id&amp;quot;: &amp;quot;aa18be6f-d93d-4a73-bd32-08291b882068&amp;quot;, \ 
+           &amp;quot;Height&amp;quot;: 10.5, \ 
+           &amp;quot;Length&amp;quot;: 10.5, \ 
+           &amp;quot;EstimatedValue&amp;quot;: 100.99, \ 
+           &amp;quot;Weight&amp;quot;: 10, \ 
+           &amp;quot;Width&amp;quot;: 15, \ 
+           &amp;quot;DeliveryAddress&amp;quot;: { \ 
+             &amp;quot;ContactName&amp;quot;: &amp;quot;John Jiggery&amp;quot;, \ 
+             &amp;quot;Email&amp;quot;: &amp;quot;delivery@example.com&amp;quot;, \ 
+             &amp;quot;Property&amp;quot;: &amp;quot;The Cube&amp;quot;, \ 
+             &amp;quot;Street&amp;quot;: &amp;quot;Coe Street&amp;quot;, \ 
+             &amp;quot;Town&amp;quot;: &amp;quot;Bolton&amp;quot;, \ 
+             &amp;quot;County&amp;quot;: &amp;quot;Bolton&amp;quot;, \ 
+             &amp;quot;Postcode&amp;quot;: &amp;quot;BL3 6BU&amp;quot;, \ 
+             &amp;quot;CountryIsoCode&amp;quot;: &amp;quot;GBR&amp;quot; \ 
+           }, \ 
+           &amp;quot;ContentsSummary&amp;quot;: &amp;quot;Slippers&amp;quot; \ 
+         } \ 
+       ], \ 
+       &amp;quot;Service&amp;quot;: &amp;quot;yodel-24&amp;quot;, \ 
+       &amp;quot;CollectionAddress&amp;quot;: { \ 
+         &amp;quot;ContactName&amp;quot;: &amp;quot;James Jammy&amp;quot;, \ 
+         &amp;quot;Email&amp;quot;: &amp;quot;james@example.com&amp;quot;, \ 
+         &amp;quot;Phone&amp;quot;: &amp;quot;077777777777&amp;quot;, \ 
+         &amp;quot;Organisation&amp;quot;: &amp;quot;Parcel2Go&amp;quot;, \ 
+         &amp;quot;Property&amp;quot;: &amp;quot;11&amp;quot;, \ 
+         &amp;quot;Street&amp;quot;: &amp;quot;Saville St&amp;quot;, \ 
+         &amp;quot;Locality&amp;quot;: &amp;quot;&amp;quot;, \ 
+         &amp;quot;Town&amp;quot;: &amp;quot;Malton&amp;quot;, \ 
+         &amp;quot;County&amp;quot;: &amp;quot;North Yorkshire&amp;quot;, \ 
+         &amp;quot;Postcode&amp;quot;: &amp;quot;YO17 7LL&amp;quot;, \ 
+         &amp;quot;CountryIsoCode&amp;quot;: &amp;quot;GBR&amp;quot;, \ 
+         &amp;quot;SpecialInstructions&amp;quot;: &amp;quot;&amp;quot; \ 
+       } \ 
+     } \ 
+   ], \ 
+   &amp;quot;CustomerDetails&amp;quot;: { \ 
+     &amp;quot;Email&amp;quot;: &amp;quot;test@example.com&amp;quot;, \ 
+     &amp;quot;Forename&amp;quot;: &amp;quot;Joe&amp;quot;, \ 
+     &amp;quot;Surname&amp;quot;: &amp;quot;Blogs&amp;quot; \ 
+   } \ 
+ }&#39; &#39;https://www.parcel2go.com/api/orders&#39;
+
+&lt;/code&gt;&lt;/pre&gt;
+
 &lt;h2 id=&#34;paying-for-an-orders&#34;&gt;Paying for an Orders&lt;/h2&gt;
+
+&lt;p&gt;In order to pay for an order a token must be provided which has the payment scope.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-curl&#34;&gt;
+curl -X POST --header &#39;Accept: application/json&#39;  --header &#39;Authorization: Bearer {TOKEN_HERE}&#39; &#39;https://www.parcel2go.com/api/orders/123/paywithprepay&#39;
+
+&lt;/code&gt;&lt;/pre&gt;
 </description>
     </item>
     

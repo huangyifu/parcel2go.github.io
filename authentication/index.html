@@ -201,6 +201,24 @@
 </li>
 
 
+
+<li>
+  
+    
+
+
+
+<a  title="International Orders" href="/help/international-orders/">
+	
+	International Orders
+</a>
+
+
+
+  
+</li>
+
+
         </ul>
         
 
@@ -229,18 +247,44 @@
 
 			
 
-<p>Parcel2Go APIs use the <a href="https://tools.ietf.org/html/rfc6749">OAuth2</a> protocol for authentication which conforms to the <a href="http://openid.net/connect/">OpenID Connect</a> specifcation.  There are several types of OAuth 2.0 authentication scenarios, the common ones are detailed below.  There are also several varying levels of access which is controlled using the <a href="#Scopes">scope parameter</a> which is specified when requesting token.</p>
+<p>Before you can start using the Parcel2Go APIs you need to configure an authentication method.  Parcel2Go APIs use the <a href="https://tools.ietf.org/html/rfc6749">OAuth2</a> protocol for authentication which conforms to the <a href="http://openid.net/connect/">OpenID Connect</a> specifcation.  There are several types of OAuth 2.0 authentication scenarios, the common ones are detailed below.  There are also several levels of access which are controlled using the <a href="#Scopes">scope parameter</a> which is specified when requesting access tokens.</p>
 
-<h3 id="client-credentials-authorisation-code-flow">Client Credentials / Authorisation Code Flow</h3>
+<h3 id="client-credentials">Client Credentials</h3>
 
 <p>You will be assigned a client id and sercret which you can then exchange for an access token using the authorisation endpoint; The access token is then used in the Authorization header when making HTTP calls to the API.</p>
 
 <ul>
 <li>Clients using this method must be able to maintain a secret.</li>
-<li>Does not provide payment scope</li>
+<li>Does not provide payment scope for customers account</li>
+<li>Payments can be configured against clients account</li>
 </ul>
 
-<p>This method is ideal when the client will be communication server to server and the payment scope is not required.</p>
+<p>This method is ideal when the client will be communication server to server and the payment scope is not required or all payments will be comining from the hosts account.</p>
+
+<h3 id="example-token-request">Example Token Request</h3>
+
+<pre><code class="language-curl">curl --request POST \
+  --url https://www.parcel2go.com/auth/connect/token \
+  --header 'content-type: application/x-www-form-urlencoded' \
+  --data 'grant_type=client_credentials&amp;scope=public-api&amp;client_id={YOUR CLIENTID}&amp;client_secret={YOUR CLIENT SECRET}'
+</code></pre>
+
+<h3 id="example-response">Example Response</h3>
+
+<pre><code class="language-json">{
+	&quot;access_token&quot;: &quot;abef.....&quot;,
+	&quot;expires_in&quot;: 7200,
+	&quot;token_type&quot;: &quot;Bearer&quot;
+}
+
+</code></pre>
+
+<p>The access_token here can now be used in HTTP requests to the api by specifying a bearer token header.</p>
+
+<pre><code class="language-curl">curl -X GET --header 'Accept: application/json' 'Authorization: Bearer abef..' 'https://www.parcel2go.com/api/services'
+
+
+</code></pre>
 
 <h3 id="implicit">Implicit</h3>
 
@@ -250,13 +294,22 @@
 <li>Provides greater level of access (payment scope)</li>
 <li>Return URLs are part of the authentication so must be registered</li>
 <li>No secret</li>
+<li>Users have to log in</li>
 </ul>
+
+<p>This flow is ideal for clients which want to intergrate with a customers parcel2go account and allow the customer to pay for their own orders.</p>
+
+<h2 id="request-access-credentials">Request Access Credentials</h2>
+
+<p>To request access credentials please send an email to <a href="mailto:apihelp@parcel2go.com">apihelp@parcel2go.com</a> with details on how you wish to use the API and which authentication method above you would like to use.  If you want to use the implicit flow, please give a list of URLS which you would like to use for the return url.</p>
 
 <h2 id="scopes">Scopes</h2>
 
+<p>The following custom scopes are provided in addition to the default OAuth 2.0 scopes.</p>
+
 <ul>
 <li>public-api - This is basic scope required for any api call</li>
-<li>payment - This scope is required in order to make payment on behalf of a customer using their prepay/stored cards.</li>
+<li>payment - This scope is required in order to make payments on behalf of a customer using their stored payment methods.</li>
 </ul>
 
 
