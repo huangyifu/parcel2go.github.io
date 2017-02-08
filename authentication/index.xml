@@ -69,9 +69,31 @@
 
 &lt;p&gt;This flow is ideal for clients which want to intergrate with a customers parcel2go account and allow the customer to pay for their own orders.&lt;/p&gt;
 
-&lt;h2 id=&#34;request-access-credentials&#34;&gt;Request Access Credentials&lt;/h2&gt;
+&lt;h3 id=&#34;example-authorize-redirect&#34;&gt;Example authorize redirect&lt;/h3&gt;
 
-&lt;p&gt;To request access credentials please send an email to &lt;a href=&#34;mailto:apihelp@parcel2go.com&#34;&gt;apihelp@parcel2go.com&lt;/a&gt; with details on how you wish to use the API and which authentication method above you would like to use.  If you want to use the implicit flow, please give a list of URLS which you would like to use for the return url.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-http&#34;&gt;
+GET /auth/connect/authorize
+?client_id=example
+&amp;amp;redirect_uri=http%3A%2F%2Fwww.example.com%2Freturn 
+&amp;amp;response_type=token
+&amp;amp;scope=openid+public-api 
+HTTP/1.1
+
+Host: www.parcel2go.com
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;example-authorize-return-url&#34;&gt;Example authorize return url&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-http&#34;&gt;GET /return
+?access_token=xxxxxxx...
+&amp;amp;token_type=Bearer
+&amp;amp;expires_in=7200
+HTTP/1.1
+
+Host:www.example.com
+
+&lt;/code&gt;&lt;/pre&gt;
 
 &lt;h2 id=&#34;scopes&#34;&gt;Scopes&lt;/h2&gt;
 
@@ -81,6 +103,10 @@
 &lt;li&gt;public-api - This is basic scope required for any api call&lt;/li&gt;
 &lt;li&gt;payment - This scope is required in order to make payments on behalf of a customer using their stored payment methods.&lt;/li&gt;
 &lt;/ul&gt;
+
+&lt;h2 id=&#34;requesting-a-client-id&#34;&gt;Requesting a Client Id&lt;/h2&gt;
+
+&lt;p&gt;To request access credentials please send an email to &lt;a href=&#34;mailto:apihelp@parcel2go.com&#34;&gt;apihelp@parcel2go.com&lt;/a&gt; with details on how you wish to use the API and which authentication method above you would like to use.  If you want to use the implicit flow, please give a list of URLS which you would like to use for the return url.&lt;/p&gt;
 </description>
     </item>
     

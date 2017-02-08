@@ -245,7 +245,144 @@
 		<div class="wrapper">
 			<h1>International Orders </h1>
 
-			<p>Shipments which are international require additional customs details and may require stricter address formatting.</p>
+			
+
+<p>International shipments require additional customs details which are provided below :</p>
+
+<ul>
+<li><p>ExportReason - The reason for exporting the item, acceptable values are:</p>
+
+<ul>
+<li>Sale</li>
+<li>Gift</li>
+<li>Sample</li>
+<li>Repair</li>
+<li>Documents</li>
+<li>IntraCompanyTransfer</li>
+<li>TemporaryExport</li>
+</ul></li>
+
+<li><p>VatStatus - This is the VAT status of the sender, one of :</p>
+
+<ul>
+<li>Individual</li>
+<li>NotRegistered</li>
+<li>Registered</li>
+</ul></li>
+
+<li><p>VatNumber - The senders VAT number if VAT status is Registered</p></li>
+
+<li><p>NifNumber - Tax identification number for spanish companies</p></li>
+
+<li><p>EoriNumber - <a href="https://www.gov.uk/eori">Economic Operator Registration and Identification Number</a> - For registered companies.</p></li>
+
+<li><p>OriginCountry - This is the ISO3 country code which the item was manufactured in.</p></li>
+</ul>
+
+<h3 id="example-of-a-failed-internation-order">Example of a failed internation order</h3>
+
+<p>This is an example of a response when customs is required but not specified.</p>
+
+<pre><code class="language-json">{
+  &quot;Errors&quot;: [
+    {
+      &quot;Type&quot;: &quot;Customs&quot;,
+      &quot;Error&quot;: &quot;Please supply the reason for exporting your parcel.&quot;,
+      &quot;ItemId&quot;: &quot;c1361416-53ca-4d67-974a-60f5335cdaf1&quot;
+    },
+    {
+      &quot;Type&quot;: &quot;Customs&quot;,
+      &quot;Error&quot;: &quot;Please supply your VAT status.&quot;,
+      &quot;ItemId&quot;: &quot;c1361416-53ca-4d67-974a-60f5335cdaf1&quot;
+    },
+    {
+      &quot;Type&quot;: &quot;Customs&quot;,
+      &quot;Error&quot;: &quot;Please supply details of your parcel's country of manufacture.&quot;,
+      &quot;ItemId&quot;: &quot;c1361416-53ca-4d67-974a-60f5335cdaf1&quot;
+    },
+    {
+      &quot;Type&quot;: &quot;Customs&quot;,
+      &quot;Error&quot;: &quot;Please supply details of your international parcel's contents.&quot;,
+      &quot;ItemId&quot;: &quot;c1361416-53ca-4d67-974a-60f5335cdaf1&quot;
+    },
+    {
+      &quot;Type&quot;: &quot;Service&quot;,
+      &quot;Error&quot;: &quot;A price could not be found for these specifications.&quot;,
+      &quot;ItemId&quot;: &quot;c1361416-53ca-4d67-974a-60f5335cdaf1&quot;
+    }
+  ]
+}
+
+</code></pre>
+
+<h3 id="example-of-an-order-specifying-customs-data">Example of an order specifying customs data</h3>
+
+<p>This is an internation order request which properly specifies customs information</p>
+
+<pre><code class="language-json">
+{
+  &quot;Items&quot;: [
+    {
+      &quot;Id&quot;: &quot;c1361416-53ca-4d67-974a-60f5335cdaf1&quot;,
+      &quot;CollectionDate&quot;: &quot;2017-02-09T10:09:11.9730419+00:00&quot;,
+      &quot;Parcels&quot;: [
+        {
+          &quot;Id&quot;: &quot;c1361416-53ca-4d67-974a-60f5335cdaf1&quot;,
+          &quot;Height&quot;: 10,
+          &quot;Length&quot;: 10,
+          &quot;EstimatedValue&quot;: 10,
+          &quot;Weight&quot;: 1,
+          &quot;Width&quot;: 10,
+          &quot;DeliveryAddress&quot;: {
+            &quot;ContactName&quot;: &quot;Gary Wilson&quot;,
+            &quot;Email&quot;: &quot;g.wilson@parcel2go.com&quot;,
+            &quot;Phone&quot;: &quot;+4477777777777&quot;,
+            &quot;Organisation&quot;: &quot;&quot;,
+            &quot;Property&quot;: &quot;1&quot;,
+            &quot;Street&quot;: &quot;S Brooklyn View Ln&quot;,
+            &quot;Locality&quot;: &quot;&quot;,
+            &quot;Town&quot;: &quot;South Jordan&quot;,
+            &quot;County&quot;: &quot;UTah&quot;,
+            &quot;Postcode&quot;: &quot;84095&quot;,
+            &quot;CountryIsoCode&quot;: &quot;USA&quot;
+          },
+          &quot;ContentsSummary&quot;: &quot;Slippers&quot;,
+          // Additional details of contents provided
+          &quot;Contents&quot;: [
+            {
+              &quot;Description&quot;: &quot;Slippers&quot;,
+              &quot;Quantity&quot;: &quot;1&quot;,
+              &quot;EstimatedValue&quot;: &quot;10&quot;
+            }
+          ]
+        }
+      ],
+      &quot;Service&quot;: &quot;parcelforce-global-priority&quot;,
+      &quot;CollectionAddress&quot;: {
+        &quot;ContactName&quot;: &quot;Test&quot;,
+        &quot;Email&quot;: &quot;collection@example.com&quot;,
+        &quot;Phone&quot;: &quot;+4477777777777&quot;,
+        &quot;Property&quot;: &quot;11&quot;,
+        &quot;Street&quot;: &quot;Saville St&quot;,
+        &quot;Town&quot;: &quot;Malton&quot;,
+        &quot;County&quot;: &quot;North Yorkshire&quot;,
+        &quot;Postcode&quot;: &quot;YO17 7LL&quot;,
+        &quot;CountryIsoCode&quot;: &quot;GBR&quot;
+      },
+      // additional details for customs below
+      &quot;OriginCountry&quot;: &quot;GBR&quot;,
+      &quot;ExportReason&quot;: &quot;Sale&quot;,
+      &quot;VatStatus&quot;: &quot;Individual&quot;
+    }
+  ],
+  &quot;CustomerDetails&quot;: {
+    &quot;Email&quot;: &quot;jj@parcel2go.com&quot;,
+    &quot;Forename&quot;: &quot;Joe&quot;,
+    &quot;Surname&quot;: &quot;Joggs&quot;
+  }
+}
+
+</code></pre>
 
 
 			<aside class="copyright" role="note">

@@ -299,9 +299,31 @@
 
 <p>This flow is ideal for clients which want to intergrate with a customers parcel2go account and allow the customer to pay for their own orders.</p>
 
-<h2 id="request-access-credentials">Request Access Credentials</h2>
+<h3 id="example-authorize-redirect">Example authorize redirect</h3>
 
-<p>To request access credentials please send an email to <a href="mailto:apihelp@parcel2go.com">apihelp@parcel2go.com</a> with details on how you wish to use the API and which authentication method above you would like to use.  If you want to use the implicit flow, please give a list of URLS which you would like to use for the return url.</p>
+<pre><code class="language-http">
+GET /auth/connect/authorize
+?client_id=example
+&amp;redirect_uri=http%3A%2F%2Fwww.example.com%2Freturn 
+&amp;response_type=token
+&amp;scope=openid+public-api 
+HTTP/1.1
+
+Host: www.parcel2go.com
+
+</code></pre>
+
+<h3 id="example-authorize-return-url">Example authorize return url</h3>
+
+<pre><code class="language-http">GET /return
+?access_token=xxxxxxx...
+&amp;token_type=Bearer
+&amp;expires_in=7200
+HTTP/1.1
+
+Host:www.example.com
+
+</code></pre>
 
 <h2 id="scopes">Scopes</h2>
 
@@ -311,6 +333,10 @@
 <li>public-api - This is basic scope required for any api call</li>
 <li>payment - This scope is required in order to make payments on behalf of a customer using their stored payment methods.</li>
 </ul>
+
+<h2 id="requesting-a-client-id">Requesting a Client Id</h2>
+
+<p>To request access credentials please send an email to <a href="mailto:apihelp@parcel2go.com">apihelp@parcel2go.com</a> with details on how you wish to use the API and which authentication method above you would like to use.  If you want to use the implicit flow, please give a list of URLS which you would like to use for the return url.</p>
 
 
 			<aside class="copyright" role="note">

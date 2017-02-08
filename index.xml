@@ -69,9 +69,31 @@
 
 &lt;p&gt;This flow is ideal for clients which want to intergrate with a customers parcel2go account and allow the customer to pay for their own orders.&lt;/p&gt;
 
-&lt;h2 id=&#34;request-access-credentials&#34;&gt;Request Access Credentials&lt;/h2&gt;
+&lt;h3 id=&#34;example-authorize-redirect&#34;&gt;Example authorize redirect&lt;/h3&gt;
 
-&lt;p&gt;To request access credentials please send an email to &lt;a href=&#34;mailto:apihelp@parcel2go.com&#34;&gt;apihelp@parcel2go.com&lt;/a&gt; with details on how you wish to use the API and which authentication method above you would like to use.  If you want to use the implicit flow, please give a list of URLS which you would like to use for the return url.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-http&#34;&gt;
+GET /auth/connect/authorize
+?client_id=example
+&amp;amp;redirect_uri=http%3A%2F%2Fwww.example.com%2Freturn 
+&amp;amp;response_type=token
+&amp;amp;scope=openid+public-api 
+HTTP/1.1
+
+Host: www.parcel2go.com
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;example-authorize-return-url&#34;&gt;Example authorize return url&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-http&#34;&gt;GET /return
+?access_token=xxxxxxx...
+&amp;amp;token_type=Bearer
+&amp;amp;expires_in=7200
+HTTP/1.1
+
+Host:www.example.com
+
+&lt;/code&gt;&lt;/pre&gt;
 
 &lt;h2 id=&#34;scopes&#34;&gt;Scopes&lt;/h2&gt;
 
@@ -81,6 +103,10 @@
 &lt;li&gt;public-api - This is basic scope required for any api call&lt;/li&gt;
 &lt;li&gt;payment - This scope is required in order to make payments on behalf of a customer using their stored payment methods.&lt;/li&gt;
 &lt;/ul&gt;
+
+&lt;h2 id=&#34;requesting-a-client-id&#34;&gt;Requesting a Client Id&lt;/h2&gt;
+
+&lt;p&gt;To request access credentials please send an email to &lt;a href=&#34;mailto:apihelp@parcel2go.com&#34;&gt;apihelp@parcel2go.com&lt;/a&gt; with details on how you wish to use the API and which authentication method above you would like to use.  If you want to use the implicit flow, please give a list of URLS which you would like to use for the return url.&lt;/p&gt;
 </description>
     </item>
     
@@ -92,11 +118,12 @@
       <guid>https://parcel2go.github.io/</guid>
       <description>
 
-&lt;p&gt;This is the documentation for the Parcel2Go API.&lt;/p&gt;
+&lt;p&gt;This is the implementation guide for the Parcel2Go API. For detailed documentation on each api call with an interactive demo see the swagger &lt;a href=&#34;https://www.parcel2go.com/api/swagger&#34;&gt;documentation site&lt;/a&gt;.&lt;/p&gt;
 
-&lt;p&gt;Detailed documentation for each call can be found on the swagger documentation site &lt;a href=&#34;https://www.parcel2go.com/api/swagger&#34;&gt;https://www.parcel2go.com/api/swagger&lt;/a&gt; .&lt;/p&gt;
+&lt;p&gt;A full demo of the API in action can be found &lt;a href=&#34;http://p2g-api-test.s3-website-eu-west-1.amazonaws.com/#/&#34;&gt;here&lt;/a&gt;
+The sourcecode is on github &lt;a href=&#34;https://github.com/Parcel2Go/Api-Demo&#34;&gt;Parcel2Go/Api-Demo&lt;/a&gt;&lt;/p&gt;
 
-&lt;h3 id=&#34;endpoints&#34;&gt;Endpoints&lt;/h3&gt;
+&lt;h3 id=&#34;api-endpoints&#34;&gt;API Endpoints&lt;/h3&gt;
 
 &lt;ul&gt;
 &lt;li&gt;Live API : &lt;a href=&#34;Https://www.parcel2go.com/api&#34;&gt;Https://www.parcel2go.com/api&lt;/a&gt;&lt;/li&gt;
@@ -114,7 +141,144 @@
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://parcel2go.github.io/help/international-orders/</guid>
-      <description>&lt;p&gt;Shipments which are international require additional customs details and may require stricter address formatting.&lt;/p&gt;
+      <description>
+
+&lt;p&gt;International shipments require additional customs details which are provided below :&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;ExportReason - The reason for exporting the item, acceptable values are:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Sale&lt;/li&gt;
+&lt;li&gt;Gift&lt;/li&gt;
+&lt;li&gt;Sample&lt;/li&gt;
+&lt;li&gt;Repair&lt;/li&gt;
+&lt;li&gt;Documents&lt;/li&gt;
+&lt;li&gt;IntraCompanyTransfer&lt;/li&gt;
+&lt;li&gt;TemporaryExport&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;VatStatus - This is the VAT status of the sender, one of :&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Individual&lt;/li&gt;
+&lt;li&gt;NotRegistered&lt;/li&gt;
+&lt;li&gt;Registered&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;VatNumber - The senders VAT number if VAT status is Registered&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;NifNumber - Tax identification number for spanish companies&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;EoriNumber - &lt;a href=&#34;https://www.gov.uk/eori&#34;&gt;Economic Operator Registration and Identification Number&lt;/a&gt; - For registered companies.&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;OriginCountry - This is the ISO3 country code which the item was manufactured in.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;example-of-a-failed-internation-order&#34;&gt;Example of a failed internation order&lt;/h3&gt;
+
+&lt;p&gt;This is an example of a response when customs is required but not specified.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-json&#34;&gt;{
+  &amp;quot;Errors&amp;quot;: [
+    {
+      &amp;quot;Type&amp;quot;: &amp;quot;Customs&amp;quot;,
+      &amp;quot;Error&amp;quot;: &amp;quot;Please supply the reason for exporting your parcel.&amp;quot;,
+      &amp;quot;ItemId&amp;quot;: &amp;quot;c1361416-53ca-4d67-974a-60f5335cdaf1&amp;quot;
+    },
+    {
+      &amp;quot;Type&amp;quot;: &amp;quot;Customs&amp;quot;,
+      &amp;quot;Error&amp;quot;: &amp;quot;Please supply your VAT status.&amp;quot;,
+      &amp;quot;ItemId&amp;quot;: &amp;quot;c1361416-53ca-4d67-974a-60f5335cdaf1&amp;quot;
+    },
+    {
+      &amp;quot;Type&amp;quot;: &amp;quot;Customs&amp;quot;,
+      &amp;quot;Error&amp;quot;: &amp;quot;Please supply details of your parcel&#39;s country of manufacture.&amp;quot;,
+      &amp;quot;ItemId&amp;quot;: &amp;quot;c1361416-53ca-4d67-974a-60f5335cdaf1&amp;quot;
+    },
+    {
+      &amp;quot;Type&amp;quot;: &amp;quot;Customs&amp;quot;,
+      &amp;quot;Error&amp;quot;: &amp;quot;Please supply details of your international parcel&#39;s contents.&amp;quot;,
+      &amp;quot;ItemId&amp;quot;: &amp;quot;c1361416-53ca-4d67-974a-60f5335cdaf1&amp;quot;
+    },
+    {
+      &amp;quot;Type&amp;quot;: &amp;quot;Service&amp;quot;,
+      &amp;quot;Error&amp;quot;: &amp;quot;A price could not be found for these specifications.&amp;quot;,
+      &amp;quot;ItemId&amp;quot;: &amp;quot;c1361416-53ca-4d67-974a-60f5335cdaf1&amp;quot;
+    }
+  ]
+}
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;example-of-an-order-specifying-customs-data&#34;&gt;Example of an order specifying customs data&lt;/h3&gt;
+
+&lt;p&gt;This is an internation order request which properly specifies customs information&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-json&#34;&gt;
+{
+  &amp;quot;Items&amp;quot;: [
+    {
+      &amp;quot;Id&amp;quot;: &amp;quot;c1361416-53ca-4d67-974a-60f5335cdaf1&amp;quot;,
+      &amp;quot;CollectionDate&amp;quot;: &amp;quot;2017-02-09T10:09:11.9730419+00:00&amp;quot;,
+      &amp;quot;Parcels&amp;quot;: [
+        {
+          &amp;quot;Id&amp;quot;: &amp;quot;c1361416-53ca-4d67-974a-60f5335cdaf1&amp;quot;,
+          &amp;quot;Height&amp;quot;: 10,
+          &amp;quot;Length&amp;quot;: 10,
+          &amp;quot;EstimatedValue&amp;quot;: 10,
+          &amp;quot;Weight&amp;quot;: 1,
+          &amp;quot;Width&amp;quot;: 10,
+          &amp;quot;DeliveryAddress&amp;quot;: {
+            &amp;quot;ContactName&amp;quot;: &amp;quot;Gary Wilson&amp;quot;,
+            &amp;quot;Email&amp;quot;: &amp;quot;g.wilson@parcel2go.com&amp;quot;,
+            &amp;quot;Phone&amp;quot;: &amp;quot;+4477777777777&amp;quot;,
+            &amp;quot;Organisation&amp;quot;: &amp;quot;&amp;quot;,
+            &amp;quot;Property&amp;quot;: &amp;quot;1&amp;quot;,
+            &amp;quot;Street&amp;quot;: &amp;quot;S Brooklyn View Ln&amp;quot;,
+            &amp;quot;Locality&amp;quot;: &amp;quot;&amp;quot;,
+            &amp;quot;Town&amp;quot;: &amp;quot;South Jordan&amp;quot;,
+            &amp;quot;County&amp;quot;: &amp;quot;UTah&amp;quot;,
+            &amp;quot;Postcode&amp;quot;: &amp;quot;84095&amp;quot;,
+            &amp;quot;CountryIsoCode&amp;quot;: &amp;quot;USA&amp;quot;
+          },
+          &amp;quot;ContentsSummary&amp;quot;: &amp;quot;Slippers&amp;quot;,
+          // Additional details of contents provided
+          &amp;quot;Contents&amp;quot;: [
+            {
+              &amp;quot;Description&amp;quot;: &amp;quot;Slippers&amp;quot;,
+              &amp;quot;Quantity&amp;quot;: &amp;quot;1&amp;quot;,
+              &amp;quot;EstimatedValue&amp;quot;: &amp;quot;10&amp;quot;
+            }
+          ]
+        }
+      ],
+      &amp;quot;Service&amp;quot;: &amp;quot;parcelforce-global-priority&amp;quot;,
+      &amp;quot;CollectionAddress&amp;quot;: {
+        &amp;quot;ContactName&amp;quot;: &amp;quot;Test&amp;quot;,
+        &amp;quot;Email&amp;quot;: &amp;quot;collection@example.com&amp;quot;,
+        &amp;quot;Phone&amp;quot;: &amp;quot;+4477777777777&amp;quot;,
+        &amp;quot;Property&amp;quot;: &amp;quot;11&amp;quot;,
+        &amp;quot;Street&amp;quot;: &amp;quot;Saville St&amp;quot;,
+        &amp;quot;Town&amp;quot;: &amp;quot;Malton&amp;quot;,
+        &amp;quot;County&amp;quot;: &amp;quot;North Yorkshire&amp;quot;,
+        &amp;quot;Postcode&amp;quot;: &amp;quot;YO17 7LL&amp;quot;,
+        &amp;quot;CountryIsoCode&amp;quot;: &amp;quot;GBR&amp;quot;
+      },
+      // additional details for customs below
+      &amp;quot;OriginCountry&amp;quot;: &amp;quot;GBR&amp;quot;,
+      &amp;quot;ExportReason&amp;quot;: &amp;quot;Sale&amp;quot;,
+      &amp;quot;VatStatus&amp;quot;: &amp;quot;Individual&amp;quot;
+    }
+  ],
+  &amp;quot;CustomerDetails&amp;quot;: {
+    &amp;quot;Email&amp;quot;: &amp;quot;jj@parcel2go.com&amp;quot;,
+    &amp;quot;Forename&amp;quot;: &amp;quot;Joe&amp;quot;,
+    &amp;quot;Surname&amp;quot;: &amp;quot;Joggs&amp;quot;
+  }
+}
+
+&lt;/code&gt;&lt;/pre&gt;
 </description>
     </item>
     
@@ -126,7 +290,7 @@
       <guid>https://parcel2go.github.io/orders/</guid>
       <description>
 
-&lt;p&gt;The flow for processing an order is to first &lt;a href=&#34;#Creating an Orders&#34;&gt;create an order&lt;/a&gt; which if successful will return an OrderId, then to &lt;a href=&#34;#Pay for Order&#34;&gt;pay for the order&lt;/a&gt; referncing the order by Id.&lt;/p&gt;
+&lt;p&gt;The flow for processing an order is to first &lt;a href=&#34;#Creating an Orders&#34;&gt;create an order&lt;/a&gt; which if successful will return an OrderId.  This orderid is then used to reference the order when payment using one of the available payment methods.&lt;/p&gt;
 
 &lt;div class=&#34;admonition note&#34;&gt;
 &lt;p class=&#34;admonition-title&#34;&gt;Note&lt;/p&gt;
@@ -135,74 +299,55 @@
 
 &lt;h2 id=&#34;creating-an-orders&#34;&gt;Creating an Orders&lt;/h2&gt;
 
-&lt;p&gt;&lt;a href=&#34;https://www.parcel2go.com/api/swagger/ui/index#!/Orders/Orders_Post&#34;&gt;Swagger Document and Demo&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;See &lt;a href=&#34;https://www.parcel2go.com/api/swagger/ui/index#!/Orders/Orders_Post&#34;&gt;Swagger Documentation&lt;/a&gt; for an interactive demo.&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-curl&#34;&gt;
-curl -X POST --header &#39;Content-Type: application/json&#39; --header &#39;Accept: application/json&#39; --header &#39;Authorization: Bearer {TOKEN_HERE}&#39; -d &#39;{ \ 
-   &amp;quot;Items&amp;quot;: [ \ 
-     { \ 
-       &amp;quot;Id&amp;quot;: &amp;quot;e7f228dd-95cc-4b5f-83d7-b901e120df73&amp;quot;, \ 
-       &amp;quot;CollectionDate&amp;quot;: &amp;quot;2018-01-02T10:05:36.1002804+00:00&amp;quot;, \ 
-       &amp;quot;Upsells&amp;quot;: [ \ 
-         { \ 
-           &amp;quot;Type&amp;quot;: &amp;quot;&amp;quot; \ 
-         } \ 
-       ], \ 
-       &amp;quot;Parcels&amp;quot;: [ \ 
-         { \ 
-           &amp;quot;Id&amp;quot;: &amp;quot;aa18be6f-d93d-4a73-bd32-08291b882068&amp;quot;, \ 
-           &amp;quot;Height&amp;quot;: 10.5, \ 
-           &amp;quot;Length&amp;quot;: 10.5, \ 
-           &amp;quot;EstimatedValue&amp;quot;: 100.99, \ 
-           &amp;quot;Weight&amp;quot;: 10, \ 
-           &amp;quot;Width&amp;quot;: 15, \ 
-           &amp;quot;DeliveryAddress&amp;quot;: { \ 
-             &amp;quot;ContactName&amp;quot;: &amp;quot;John Jiggery&amp;quot;, \ 
-             &amp;quot;Email&amp;quot;: &amp;quot;delivery@example.com&amp;quot;, \ 
-             &amp;quot;Property&amp;quot;: &amp;quot;The Cube&amp;quot;, \ 
-             &amp;quot;Street&amp;quot;: &amp;quot;Coe Street&amp;quot;, \ 
-             &amp;quot;Town&amp;quot;: &amp;quot;Bolton&amp;quot;, \ 
-             &amp;quot;County&amp;quot;: &amp;quot;Bolton&amp;quot;, \ 
-             &amp;quot;Postcode&amp;quot;: &amp;quot;BL3 6BU&amp;quot;, \ 
-             &amp;quot;CountryIsoCode&amp;quot;: &amp;quot;GBR&amp;quot; \ 
-           }, \ 
-           &amp;quot;ContentsSummary&amp;quot;: &amp;quot;Slippers&amp;quot; \ 
-         } \ 
-       ], \ 
-       &amp;quot;Service&amp;quot;: &amp;quot;yodel-24&amp;quot;, \ 
-       &amp;quot;CollectionAddress&amp;quot;: { \ 
-         &amp;quot;ContactName&amp;quot;: &amp;quot;James Jammy&amp;quot;, \ 
-         &amp;quot;Email&amp;quot;: &amp;quot;james@example.com&amp;quot;, \ 
-         &amp;quot;Phone&amp;quot;: &amp;quot;077777777777&amp;quot;, \ 
-         &amp;quot;Organisation&amp;quot;: &amp;quot;Parcel2Go&amp;quot;, \ 
-         &amp;quot;Property&amp;quot;: &amp;quot;11&amp;quot;, \ 
-         &amp;quot;Street&amp;quot;: &amp;quot;Saville St&amp;quot;, \ 
-         &amp;quot;Locality&amp;quot;: &amp;quot;&amp;quot;, \ 
-         &amp;quot;Town&amp;quot;: &amp;quot;Malton&amp;quot;, \ 
-         &amp;quot;County&amp;quot;: &amp;quot;North Yorkshire&amp;quot;, \ 
-         &amp;quot;Postcode&amp;quot;: &amp;quot;YO17 7LL&amp;quot;, \ 
-         &amp;quot;CountryIsoCode&amp;quot;: &amp;quot;GBR&amp;quot;, \ 
-         &amp;quot;SpecialInstructions&amp;quot;: &amp;quot;&amp;quot; \ 
-       } \ 
-     } \ 
-   ], \ 
-   &amp;quot;CustomerDetails&amp;quot;: { \ 
-     &amp;quot;Email&amp;quot;: &amp;quot;test@example.com&amp;quot;, \ 
-     &amp;quot;Forename&amp;quot;: &amp;quot;Joe&amp;quot;, \ 
-     &amp;quot;Surname&amp;quot;: &amp;quot;Blogs&amp;quot; \ 
-   } \ 
- }&#39; &#39;https://www.parcel2go.com/api/orders&#39;
+&lt;p&gt;A successful response will include the orderId allow with links to payment options.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;OrderLineHMmac - This reference is for getting labels or doing any action which would normally require user permissions.&lt;/li&gt;
+&lt;li&gt;OrderlineIdMap - This is a map of OrderLineIds to the original request item ids which you assigned.&lt;/li&gt;
+&lt;li&gt;OrderLineId - This is the parcel2go reference for this shipment and is an important reference used for contacting parcel2go about a shipment&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;successful-response&#34;&gt;Successful Response&lt;/h3&gt;
+
+&lt;p&gt;The following is a successful response from creating an order.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-json&#34;&gt;{
+  &amp;quot;OrderId&amp;quot;: &amp;quot;29285115&amp;quot;,
+  &amp;quot;Links&amp;quot;: {
+    &amp;quot;payment&amp;quot;: &amp;quot;https://www.parcel2go.com/order/payment?id=29285115&amp;amp;hash=6f480df1253fd20796f418c273853a60&amp;quot;,
+    &amp;quot;PayWithPrePay&amp;quot;: &amp;quot;https://www.parcel2go.com/api/orders/29285115/paywithprepay&amp;quot;
+  },
+  &amp;quot;TotalPrice&amp;quot;: 13.43,
+  &amp;quot;TotalVat&amp;quot;: 2.24,
+  &amp;quot;TotalPriceExVat&amp;quot;: 11.19,
+  &amp;quot;OrderlineIdMap&amp;quot;: [
+    {
+      &amp;quot;OrderLineIdHmac&amp;quot;: &amp;quot;40069998|iFtr1p3ZeyVgFkx1M0OwB8Q0e04F5NLGtcXWBjIhAQE=&amp;quot;,
+      &amp;quot;OrderLineId&amp;quot;: &amp;quot;40069998&amp;quot;,
+      &amp;quot;ItemId&amp;quot;: &amp;quot;06364749-1bfa-4152-a8d7-0f0a5d9f602c&amp;quot;
+    }
+  ]
+}
 
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;h2 id=&#34;paying-for-an-orders&#34;&gt;Paying for an Orders&lt;/h2&gt;
 
-&lt;p&gt;In order to pay for an order a token must be provided which has the payment scope.&lt;/p&gt;
+&lt;p&gt;See the Sandbox &lt;a href=&#34;https://api.qa.parcelsolutions.net/api/swagger/ui/index#/PayWithPrepay&#34;&gt;Swagger Documentation&lt;/a&gt; for an interactive demo.&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-curl&#34;&gt;
-curl -X POST --header &#39;Accept: application/json&#39;  --header &#39;Authorization: Bearer {TOKEN_HERE}&#39; &#39;https://www.parcel2go.com/api/orders/123/paywithprepay&#39;
+&lt;h3 id=&#34;prepay&#34;&gt;Prepay&lt;/h3&gt;
 
-&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;In order to pay for an order with a customer prepay, a token must be provided which has the &lt;a href=&#34;https://parcel2go.github.io/authentication#scopes&#34;&gt;payment scope&lt;/a&gt; and you must be authorised by the user (via implicit flow).  It&amp;rsquo;s also possible to setup prepay so that a single account will be debited for clients which want to use their own account to pay for orders.&lt;/p&gt;
+
+&lt;h3 id=&#34;stored-cards&#34;&gt;Stored Cards&lt;/h3&gt;
+
+&lt;p&gt;Coming Soon&lt;/p&gt;
+
+&lt;h3 id=&#34;redirect-to-parcel2go-com&#34;&gt;Redirect to parcel2go.com&lt;/h3&gt;
+
+&lt;p&gt;It&amp;rsquo;s possible to complete the payment on parcel2go.com by redirecting the user to the payment url returned from the /order call. This will complete the order as if it was done with parcel2go.com, all payment option will be available.&lt;/p&gt;
 </description>
     </item>
     

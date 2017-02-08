@@ -247,7 +247,7 @@
 
 			
 
-<p>The flow for processing an order is to first <a href="#Creating an Orders">create an order</a> which if successful will return an OrderId, then to <a href="#Pay for Order">pay for the order</a> referncing the order by Id.</p>
+<p>The flow for processing an order is to first <a href="#Creating an Orders">create an order</a> which if successful will return an OrderId.  This orderid is then used to reference the order when payment using one of the available payment methods.</p>
 
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -256,74 +256,55 @@
 
 <h2 id="creating-an-orders">Creating an Orders</h2>
 
-<p><a href="https://www.parcel2go.com/api/swagger/ui/index#!/Orders/Orders_Post">Swagger Document and Demo</a></p>
+<p>See <a href="https://www.parcel2go.com/api/swagger/ui/index#!/Orders/Orders_Post">Swagger Documentation</a> for an interactive demo.</p>
 
-<pre><code class="language-curl">
-curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' --header 'Authorization: Bearer {TOKEN_HERE}' -d '{ \ 
-   &quot;Items&quot;: [ \ 
-     { \ 
-       &quot;Id&quot;: &quot;e7f228dd-95cc-4b5f-83d7-b901e120df73&quot;, \ 
-       &quot;CollectionDate&quot;: &quot;2018-01-02T10:05:36.1002804+00:00&quot;, \ 
-       &quot;Upsells&quot;: [ \ 
-         { \ 
-           &quot;Type&quot;: &quot;&quot; \ 
-         } \ 
-       ], \ 
-       &quot;Parcels&quot;: [ \ 
-         { \ 
-           &quot;Id&quot;: &quot;aa18be6f-d93d-4a73-bd32-08291b882068&quot;, \ 
-           &quot;Height&quot;: 10.5, \ 
-           &quot;Length&quot;: 10.5, \ 
-           &quot;EstimatedValue&quot;: 100.99, \ 
-           &quot;Weight&quot;: 10, \ 
-           &quot;Width&quot;: 15, \ 
-           &quot;DeliveryAddress&quot;: { \ 
-             &quot;ContactName&quot;: &quot;John Jiggery&quot;, \ 
-             &quot;Email&quot;: &quot;delivery@example.com&quot;, \ 
-             &quot;Property&quot;: &quot;The Cube&quot;, \ 
-             &quot;Street&quot;: &quot;Coe Street&quot;, \ 
-             &quot;Town&quot;: &quot;Bolton&quot;, \ 
-             &quot;County&quot;: &quot;Bolton&quot;, \ 
-             &quot;Postcode&quot;: &quot;BL3 6BU&quot;, \ 
-             &quot;CountryIsoCode&quot;: &quot;GBR&quot; \ 
-           }, \ 
-           &quot;ContentsSummary&quot;: &quot;Slippers&quot; \ 
-         } \ 
-       ], \ 
-       &quot;Service&quot;: &quot;yodel-24&quot;, \ 
-       &quot;CollectionAddress&quot;: { \ 
-         &quot;ContactName&quot;: &quot;James Jammy&quot;, \ 
-         &quot;Email&quot;: &quot;james@example.com&quot;, \ 
-         &quot;Phone&quot;: &quot;077777777777&quot;, \ 
-         &quot;Organisation&quot;: &quot;Parcel2Go&quot;, \ 
-         &quot;Property&quot;: &quot;11&quot;, \ 
-         &quot;Street&quot;: &quot;Saville St&quot;, \ 
-         &quot;Locality&quot;: &quot;&quot;, \ 
-         &quot;Town&quot;: &quot;Malton&quot;, \ 
-         &quot;County&quot;: &quot;North Yorkshire&quot;, \ 
-         &quot;Postcode&quot;: &quot;YO17 7LL&quot;, \ 
-         &quot;CountryIsoCode&quot;: &quot;GBR&quot;, \ 
-         &quot;SpecialInstructions&quot;: &quot;&quot; \ 
-       } \ 
-     } \ 
-   ], \ 
-   &quot;CustomerDetails&quot;: { \ 
-     &quot;Email&quot;: &quot;test@example.com&quot;, \ 
-     &quot;Forename&quot;: &quot;Joe&quot;, \ 
-     &quot;Surname&quot;: &quot;Blogs&quot; \ 
-   } \ 
- }' 'https://www.parcel2go.com/api/orders'
+<p>A successful response will include the orderId allow with links to payment options.</p>
+
+<ul>
+<li>OrderLineHMmac - This reference is for getting labels or doing any action which would normally require user permissions.</li>
+<li>OrderlineIdMap - This is a map of OrderLineIds to the original request item ids which you assigned.</li>
+<li>OrderLineId - This is the parcel2go reference for this shipment and is an important reference used for contacting parcel2go about a shipment</li>
+</ul>
+
+<h3 id="successful-response">Successful Response</h3>
+
+<p>The following is a successful response from creating an order.</p>
+
+<pre><code class="language-json">{
+  &quot;OrderId&quot;: &quot;29285115&quot;,
+  &quot;Links&quot;: {
+    &quot;payment&quot;: &quot;https://www.parcel2go.com/order/payment?id=29285115&amp;hash=6f480df1253fd20796f418c273853a60&quot;,
+    &quot;PayWithPrePay&quot;: &quot;https://www.parcel2go.com/api/orders/29285115/paywithprepay&quot;
+  },
+  &quot;TotalPrice&quot;: 13.43,
+  &quot;TotalVat&quot;: 2.24,
+  &quot;TotalPriceExVat&quot;: 11.19,
+  &quot;OrderlineIdMap&quot;: [
+    {
+      &quot;OrderLineIdHmac&quot;: &quot;40069998|iFtr1p3ZeyVgFkx1M0OwB8Q0e04F5NLGtcXWBjIhAQE=&quot;,
+      &quot;OrderLineId&quot;: &quot;40069998&quot;,
+      &quot;ItemId&quot;: &quot;06364749-1bfa-4152-a8d7-0f0a5d9f602c&quot;
+    }
+  ]
+}
 
 </code></pre>
 
 <h2 id="paying-for-an-orders">Paying for an Orders</h2>
 
-<p>In order to pay for an order a token must be provided which has the payment scope.</p>
+<p>See the Sandbox <a href="https://api.qa.parcelsolutions.net/api/swagger/ui/index#/PayWithPrepay">Swagger Documentation</a> for an interactive demo.</p>
 
-<pre><code class="language-curl">
-curl -X POST --header 'Accept: application/json'  --header 'Authorization: Bearer {TOKEN_HERE}' 'https://www.parcel2go.com/api/orders/123/paywithprepay'
+<h3 id="prepay">Prepay</h3>
 
-</code></pre>
+<p>In order to pay for an order with a customer prepay, a token must be provided which has the <a href="/authentication#scopes">payment scope</a> and you must be authorised by the user (via implicit flow).  It&rsquo;s also possible to setup prepay so that a single account will be debited for clients which want to use their own account to pay for orders.</p>
+
+<h3 id="stored-cards">Stored Cards</h3>
+
+<p>Coming Soon</p>
+
+<h3 id="redirect-to-parcel2go-com">Redirect to parcel2go.com</h3>
+
+<p>It&rsquo;s possible to complete the payment on parcel2go.com by redirecting the user to the payment url returned from the /order call. This will complete the order as if it was done with parcel2go.com, all payment option will be available.</p>
 
 
 			<aside class="copyright" role="note">
