@@ -254,9 +254,10 @@
 <p>You will be assigned a client id and sercret which you can then exchange for an access token using the authorisation endpoint; The access token is then used in the Authorization header when making HTTP calls to the API.</p>
 
 <ul>
-<li>Clients using this method must be able to maintain a secret.</li>
+<li>Clients using this method must be able to maintain a secret (not suitable for client side code).</li>
 <li>Does not provide payment scope for customers account</li>
 <li>Payments can be configured against clients account</li>
+<li>Tokens have an expiry time</li>
 </ul>
 
 <p>This method is ideal when the client will be communication server to server and the payment scope is not required or all payments will be comining from the hosts account.</p>
@@ -295,6 +296,8 @@
 <li>Return URLs are part of the authentication so must be registered</li>
 <li>No secret</li>
 <li>Users have to log in</li>
+<li>Users can revoke the access token</li>
+<li>Tokens have a short lived expiry date</li>
 </ul>
 
 <p>This flow is ideal for clients which want to intergrate with a customers parcel2go account and allow the customer to pay for their own orders.</p>
