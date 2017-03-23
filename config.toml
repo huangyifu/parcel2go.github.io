@@ -1,0 +1,18 @@
+languageCode = "en-gb"
+title = "Parcel2Go API Docs"
+baseurl = "https://parcel2go.github.io"
+theme = "hugo-material-docs"
+
+[params]
+# General information
+author = "Parcel2Go"
+description = "Parcel2Go documentation"
+copyright = "Parcel2Go"
+  [params.palette]
+    primary = "blue"
+    accent  = "light-blue"
+
+[[menu.main]]
+	name   = "Home"
+	url    = "/"
+	weight = 0
