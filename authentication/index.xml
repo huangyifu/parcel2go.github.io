@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Authentications on Parcel2Go API Docs</title>
+    <link>https://parcel2go.github.io/authentication/index.xml</link>
+    <description>Recent content in Authentications on Parcel2Go API Docs</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-gb</language>
+    <copyright>Parcel2Go</copyright>
+    <atom:link href="https://parcel2go.github.io/authentication/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Token Expiry</title>
+      <link>https://parcel2go.github.io/authentication/token-expiry/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://parcel2go.github.io/authentication/token-expiry/</guid>
+      <description>&lt;p&gt;Tokens retrieved from the token expoint have an expiry date that is specified in&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Tokens and Flows</title>
+      <link>https://parcel2go.github.io/authentication/tokens-flows/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://parcel2go.github.io/authentication/tokens-flows/</guid>
+      <description>
+
+&lt;p&gt;Before you can start using the Parcel2Go APIs you need to configure an authentication method.  Parcel2Go APIs use the &lt;a href=&#34;https://tools.ietf.org/html/rfc6749&#34;&gt;OAuth2&lt;/a&gt; protocol for authentication which conforms to the &lt;a href=&#34;http://openid.net/connect/&#34;&gt;OpenID Connect&lt;/a&gt; specifcation.  There are several types of OAuth 2.0 authentication scenarios, the common ones are detailed below.  There are also several levels of access which are controlled using the &lt;a href=&#34;#Scopes&#34;&gt;scope parameter&lt;/a&gt; which is specified when requesting access tokens.&lt;/p&gt;
+
+&lt;h3 id=&#34;client-credentials&#34;&gt;Client Credentials&lt;/h3&gt;
+
+&lt;p&gt;You will be assigned a client id and sercret which you can then exchange for an access token using the authorisation endpoint; The access token is then used in the Authorization header when making HTTP calls to the API.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Clients using this method must be able to maintain a secret (not suitable for client side code).&lt;/li&gt;
+&lt;li&gt;Does not provide payment scope for customers account&lt;/li&gt;
+&lt;li&gt;Payments can be configured against clients account&lt;/li&gt;
+&lt;li&gt;Tokens have an expiry time&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;This method is ideal when the client will be communication server to server and the payment scope is not required or all payments will be comining from the hosts account.&lt;/p&gt;
+
+&lt;h3 id=&#34;example-token-request&#34;&gt;Example Token Request&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-curl&#34;&gt;curl --request POST \
+  --url https://www.parcel2go.com/auth/connect/token \
+  --header &#39;content-type: application/x-www-form-urlencoded&#39; \
+  --data &#39;grant_type=client_credentials&amp;amp;scope=public-api&amp;amp;client_id={YOUR CLIENTID}&amp;amp;client_secret={YOUR CLIENT SECRET}&#39;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;example-response&#34;&gt;Example Response&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-json&#34;&gt;{
+	&amp;quot;access_token&amp;quot;: &amp;quot;abef.....&amp;quot;,
+	&amp;quot;expires_in&amp;quot;: 7200,
+	&amp;quot;token_type&amp;quot;: &amp;quot;Bearer&amp;quot;
+}
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The access_token here can now be used in HTTP requests to the api by specifying a bearer token header.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-curl&#34;&gt;curl -X GET --header &#39;Accept: application/json&#39; &#39;Authorization: Bearer abef..&#39; &#39;https://www.parcel2go.com/api/services&#39;
+
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;implicit&#34;&gt;Implicit&lt;/h3&gt;
+
+&lt;p&gt;You will redirect the user to our authorisation endpoint where the user will login and get redirected back to your site.  The access token will be included in the redirect url.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Provides greater level of access (payment scope)&lt;/li&gt;
+&lt;li&gt;Return URLs are part of the authentication so must be registered&lt;/li&gt;
+&lt;li&gt;No secret&lt;/li&gt;
+&lt;li&gt;Users have to log in&lt;/li&gt;
+&lt;li&gt;Users can revoke the access token&lt;/li&gt;
+&lt;li&gt;Tokens have a short lived expiry date&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;This flow is ideal for clients which want to intergrate with a customers parcel2go account and allow the customer to pay for their own orders.&lt;/p&gt;
+
+&lt;h3 id=&#34;example-authorize-redirect&#34;&gt;Example authorize redirect&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-http&#34;&gt;
+GET /auth/connect/authorize
+?client_id=example
+&amp;amp;redirect_uri=http%3A%2F%2Fwww.example.com%2Freturn 
+&amp;amp;response_type=token
+&amp;amp;scope=openid+public-api 
+HTTP/1.1
+
+Host: www.parcel2go.com
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;example-authorize-return-url&#34;&gt;Example authorize return url&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-http&#34;&gt;GET /return
+?access_token=xxxxxxx...
+&amp;amp;token_type=Bearer
+&amp;amp;expires_in=7200
+HTTP/1.1
+
+Host:www.example.com
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;scopes&#34;&gt;Scopes&lt;/h2&gt;
+
+&lt;p&gt;The following custom scopes are provided in addition to the default OAuth 2.0 scopes.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;public-api - This is basic scope required for any api call&lt;/li&gt;
+&lt;li&gt;payment - This scope is required in order to make payments on behalf of a customer using their stored payment methods.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;requesting-a-client-id&#34;&gt;Requesting a Client Id&lt;/h2&gt;
+
+&lt;p&gt;To request access credentials please send an email to &lt;a href=&#34;mailto:apihelp@parcel2go.com&#34;&gt;apihelp@parcel2go.com&lt;/a&gt; with details on how you wish to use the API and which authentication method above you would like to use.  If you want to use the implicit flow, please give a list of URLS which you would like to use for the return url.&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>
